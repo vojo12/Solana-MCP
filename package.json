@@ -1,0 +1,44 @@
+{
+  "name": "solana-mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for AI agents to interact with Solana blockchain",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "solana",
+    "defi",
+    "agent-kit",
+    "ai",
+    "mcp",
+    "model-context-protocol",
+    "jupiter",
+    "blockchain"
+  ],
+  "author": "Caio Vicentino",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "solana-agent-kit": "github:sendaifun/solana-agent-kit",
+    "@modelcontextprotocol/sdk": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "eslint": "^8.56.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caiovicentino/Solana-MCP.git"
+  }
+}
