@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
@@ -23,16 +23,24 @@
   "author": "Caio Vicentino",
   "license": "MIT",
   "dependencies": {
+    "@bonfida/spl-name-service": "^3.0.10",
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "@wormhole-foundation/sdk": "^1.13.2",
+    "axios": "^1.8.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "solana-agent-kit": "github:sendaifun/solana-agent-kit",
-    "@modelcontextprotocol/sdk": "^1.5.0"
+    "express": "^4.21.2",
+    "path": "^0.12.7",
+    "solana-agent-kit": "^1.4.9"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/node": "^20.5.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2",
     "eslint": "^8.56.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
   },
   "engines": {
     "node": ">=22.0.0"

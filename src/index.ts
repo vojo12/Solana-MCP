@@ -1,5 +1,4 @@
-import { ACTIONS, SolanaAgentKit } from "solana-agent-kit";
-import { startMcpServer } from "solana-agent-kit/src/mcp";
+import { ACTIONS, SolanaAgentKit, startMcpServer } from "solana-agent-kit";
 import * as dotenv from "dotenv";
 
 // Redirect logs to stderr instead of stdout
@@ -36,8 +35,7 @@ const mcp_actions = {
     // Core wallet operations
     "get_wallet": ACTIONS.WALLET_ADDRESS_ACTION,
     "check_balance": ACTIONS.BALANCE_ACTION,
-    "transfer_sol": ACTIONS.TRANSFER_ACTION,
-    "list_tokens": ACTIONS.BALANCE_ACTION, // For token balances
+    "list_tokens": ACTIONS.TOKEN_BALANCES_ACTION, // Use a different action for token balances
     
     // Market data and trading
     "fetch_price": ACTIONS.FETCH_PRICE_ACTION,

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oblivion On Chain</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fab fa-solana"></i>
+                <span>OBLIVION ON CHAIN</span>
+            </div>
+            <div class="wallet-info">
+                <div class="wallet-label">CONNECTED WALLET</div>
+                <div class="wallet-address" id="wallet-address">Loading...</div>
+                <div class="wallet-balance" id="wallet-balance">-- SOL</div>
+            </div>
+            <div class="network-status">
+                <div class="status-indicator online"></div>
+                <span>MAINNET</span>
+                <div class="tps-indicator" id="tps-indicator">-- TPS</div>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-section="chat">
+                    <i class="fas fa-comment-alt"></i>
+                    <span>Chat</span>
+                </button>
+                <button class="nav-item" data-section="credits">
+                    <i class="fas fa-coins"></i>
+                    <span>Credits</span>
+                </button>
+                <button class="nav-item" data-section="market">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Market</span>
+                </button>
+                <button class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="version">v1.0.0</div>
+                <a href="https://solana.com" target="_blank" class="powered-by">
+                    Powered by Solana
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <header class="top-bar">
+                <div class="section-title">OBLIVION ON CHAIN CHAT</div>
+                <div class="actions">
+                    <button class="action-btn" id="refresh-btn" title="Refresh data">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Chat Section -->
+                <div class="section active" id="chat-section">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message system">
+                                <div class="message-time">Now</div>
+                                <div class="message-content">
+                                    <i class="fas fa-robot message-icon"></i>
+                                    <div class="message-text">
+                                        Welcome to the Oblivion On Chain futuristic interface! Type a command or choose one of the actions below.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <button class="action-chip" onclick="sendAction('get_wallet')">
+                                <i class="fas fa-wallet"></i> View Wallet
+                            </button>
+                            <button class="action-chip" onclick="sendAction('check_balance')">
+                                <i class="fas fa-coins"></i> Check Balance
+                            </button>
+                            <button class="action-chip" onclick="sendAction('list_tokens')">
+                                <i class="fas fa-list"></i> List Tokens
+                            </button>
+                            <button class="action-chip" onclick="sendAction('get_tps')">
+                                <i class="fas fa-tachometer-alt"></i> Network TPS
+                            </button>
+                            <button class="action-chip" onclick="sendAction('fetch_price')">
+                                <i class="fas fa-tag"></i> Check Price
+                            </button>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <input type="text" id="user-input" placeholder="Type a command or message...">
+                            <button id="send-button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credits Section -->
+                <div class="section" id="credits-section">
+                    <div class="section-header">
+                        <h2>Chat Credits</h2>
+                        <button class="refresh-btn" id="refresh-credits-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="token-balance-summary">
+                        <div class="total-value">
+                            <span class="label">Available Credits</span>
+                            <span class="value" id="available-credits">100</span>
+                        </div>
+                        <div class="credits-info">
+                            <p>Credits are used to send messages in the chat.</p>
+                            <p>Each message costs 1 credit.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="credits-packages">
+                        <h3>Purchase Credits</h3>
+                        <div class="packages-container" id="credits-packages">
+                            <div class="package-item">
+                                <div class="package-amount">50 Credits</div>
+                                <div class="package-price">$5.00</div>
+                                <div class="crypto-payment-badge">
+                                    <i class="fas fa-dollar-sign"></i> USDC/USDT
+                                </div>
+                                <button class="package-buy-btn" data-amount="50" data-price="5.00">
+                                    <i class="fas fa-shopping-cart"></i> Buy with Stablecoin
+                                </button>
+                            </div>
+                            <div class="package-item">
+                                <div class="package-amount">100 Credits</div>
+                                <div class="package-price">$9.00</div>
+                                <div class="package-discount">10% OFF</div>
+                                <div class="crypto-payment-badge">
+                                    <i class="fas fa-dollar-sign"></i> USDC/USDT
+                                </div>
+                                <button class="package-buy-btn" data-amount="100" data-price="9.00">
+                                    <i class="fas fa-shopping-cart"></i> Buy with Stablecoin
+                                </button>
+                            </div>
+                            <div class="package-item featured">
+                                <div class="package-amount">250 Credits</div>
+                                <div class="package-price">$20.00</div>
+                                <div class="package-discount">20% OFF</div>
+                                <div class="crypto-payment-badge">
+                                    <i class="fas fa-dollar-sign"></i> USDC/USDT
+                                </div>
+                                <button class="package-buy-btn" data-amount="250" data-price="20.00">
+                                    <i class="fas fa-shopping-cart"></i> Buy with Stablecoin
+                                </button>
+                            </div>
+                            <div class="package-item">
+                                <div class="package-amount">500 Credits</div>
+                                <div class="package-price">$35.00</div>
+                                <div class="package-discount">30% OFF</div>
+                                <div class="crypto-payment-badge">
+                                    <i class="fas fa-dollar-sign"></i> USDC/USDT
+                                </div>
+                                <button class="package-buy-btn" data-amount="500" data-price="35.00">
+                                    <i class="fas fa-shopping-cart"></i> Buy with Stablecoin
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="credits-history">
+                        <h3>Transaction History</h3>
+                        <div class="history-container" id="credits-history">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2023-07-15</td>
+                                        <td>Purchase (SOL)</td>
+                                        <td>+100</td>
+                                        <td>100</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2023-07-15</td>
+                                        <td>Usage</td>
+                                        <td>-5</td>
+                                        <td>95</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2023-07-16</td>
+                                        <td>Usage</td>
+                                        <td>-10</td>
+                                        <td>85</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2023-07-18</td>
+                                        <td>Purchase (USDC)</td>
+                                        <td>+50</td>
+                                        <td>135</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2023-07-20</td>
+                                        <td>Usage</td>
+                                        <td>-35</td>
+                                        <td>100</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Modal -->
+                    <div class="modal" id="payment-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Purchase Credits</h3>
+                                <button class="close-btn">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="package-info">
+                                    <div class="package-amount" id="package-amount">100 Credits</div>
+                                    <div class="package-price" id="package-price">$9.00</div>
+                                </div>
+                                
+                                <div class="crypto-payment-options">
+                                    <h4>Select Cryptocurrency</h4>
+                                    <div class="crypto-options">
+                                        <label class="crypto-option">
+                                            <input type="radio" name="crypto-method" value="USDC" checked>
+                                            <span class="crypto-label">
+                                                <i class="fas fa-dollar-sign"></i> USD Coin (USDC)
+                                            </span>
+                                            <span class="crypto-price" id="usdc-price">9.00 USDC</span>
+                                        </label>
+                                        <label class="crypto-option">
+                                            <input type="radio" name="crypto-method" value="USDT">
+                                            <span class="crypto-label">
+                                                <i class="fas fa-dollar-sign"></i> Tether (USDT)
+                                            </span>
+                                            <span class="crypto-price" id="usdt-price">9.00 USDT</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-details">
+                                    <h4>Payment Details</h4>
+                                    <div class="payment-address-container">
+                                        <div class="payment-address-label">Send to this address:</div>
+                                        <div class="payment-address" id="payment-address">solana:5FHwkrdxD5AKmYoRvejJZVNBUg5PfEUXLYAQzg8RZxSP</div>
+                                        <button class="copy-btn" id="copy-payment-address">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                    <div class="payment-qr-container">
+                                        <div id="payment-qr-code"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="cancel-btn">Cancel</button>
+                                <button class="confirm-btn" id="confirm-payment-btn">Confirm Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Section -->
+                <div class="section" id="market-section">
+                    <div class="section-header">
+                        <h2>Market Overview</h2>
+                        <button class="refresh-btn" id="refresh-market-btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="market-search">
+                        <input type="text" id="market-search-input" placeholder="Search tokens...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <div class="market-table-container">
+                        <table class="market-table">
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Price</th>
+                                    <th>24h Change</th>
+                                    <th>24h Volume</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="market-table-body">
+                                <tr>
+                                    <td colspan="5" class="loading-cell">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading market data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="market-chart-container">
+                        <div class="chart-header">
+                            <h3 id="chart-title">Selecione um token para visualizar o gráfico</h3>
+                            <div class="chart-timeframes">
+                                <button class="timeframe-btn active" data-timeframe="1D">1D</button>
+                                <button class="timeframe-btn" data-timeframe="1W">1W</button>
+                                <button class="timeframe-btn" data-timeframe="1M">1M</button>
+                                <button class="timeframe-btn" data-timeframe="1Y">1Y</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div id="tradingview-widget-container"></div>
+                            <div class="chart-placeholder" id="chart-placeholder">
+                                <i class="fas fa-chart-line"></i>
+                                <p>Selecione um token para visualizar o gráfico</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="section" id="settings-section">
+                    <div class="section-header">
+                        <h2>Settings</h2>
+                        <button class="save-btn" id="save-settings-btn">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+                    
+                    <div class="settings-container">
+                        <div class="settings-group">
+                            <h3>Language</h3>
+                            <div class="setting-item">
+                                <label for="language-select">Interface Language</label>
+                                <select id="language-select" class="form-control">
+                                    <option value="en">English</option>
+                                    <option value="pt">Portuguese</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="th">Thai</option>
+                                </select>
+                            </div>
+                            <div class="setting-description">
+                                Change the language of the user interface. This will affect all text in the application.
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Data Refresh</h3>
+                            <div class="setting-item toggle">
+                                <label for="auto-refresh-toggle">Auto Refresh Market Data</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="auto-refresh-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <label for="refresh-interval">Refresh Interval (seconds)</label>
+                                <input type="number" id="refresh-interval" class="form-control" value="60" min="10" max="300">
+                            </div>
+                            <div class="setting-description">
+                                Configure how often market data is automatically refreshed.
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Notifications</h3>
+                            <div class="setting-item toggle">
+                                <label for="notifications-toggle">Enable Notifications</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="notifications-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="setting-description">
+                                Receive notifications for important events like completed transactions.
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Security</h3>
+                            <div class="setting-item toggle">
+                                <label for="hide-balances-toggle">Hide Balances</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="hide-balances-toggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <label for="transaction-limit">Transaction Limit (SOL)</label>
+                                <input type="number" id="transaction-limit" class="form-control" value="10" min="0">
+                            </div>
+                            <div class="setting-description">
+                                Set security preferences to protect your account and transactions.
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Credits</h3>
+                            <div class="setting-item">
+                                <label for="credit-cost-per-message">Credit Cost Per Message</label>
+                                <input type="number" id="credit-cost-per-message" class="form-control" value="1" min="1" max="10">
+                            </div>
+                            <div class="setting-description">
+                                Configure how many credits are used for each message sent in the chat.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
